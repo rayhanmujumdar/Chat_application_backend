@@ -1,7 +1,9 @@
-const jwt = require("jsonwebtoken");
+
 const bcrypt = require("bcrypt");
 const error = require("../utils/error");
-const { findUserByProperty, createNewUser } = require("./user.js");
+const { findUserByProperty, createNewUser, jwtToken } = require("./user.js");
+
+//register services
 exports.registerService = async ({ email, password, name }) => {
   const user = await findUserByProperty("email", email);
   if (user) {
@@ -13,11 +15,14 @@ exports.registerService = async ({ email, password, name }) => {
     password: hashPassword,
     name,
   });
-  return jwt.sign(
-    { name: userInfo.name, email: userInfo.password },
-    process.env.JWTSCRECT,
-    {
-      expiresIn: "1h",
-    }
-  );
+  return jwtToken({ name: userInfo.name, email: userInfo.email });
+};
+
+// login services
+exports.loginService = async ({ email, password }) => {
+  const userInfo = await findUserByProperty("email", email);
+  const isPassword = await bcrypt.compare(password, userInfo.password);
+  if (userInfo && isPassword) {
+    return jwtToken({ name: userInfo.name, email: userInfo.email });
+  }
 };
