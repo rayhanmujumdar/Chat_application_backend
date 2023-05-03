@@ -1,4 +1,4 @@
-const { model, Schema, default: mongoose } = require("mongoose");
+const { model, Schema} = require("mongoose");
 
 const conversationSchema = new Schema({
   participants: {
@@ -23,7 +23,7 @@ const conversationSchema = new Schema({
       },
     },
   },
-  messages: String,
+  message: String,
   timestamp: {
     type: Date,
     default: Date.now,
