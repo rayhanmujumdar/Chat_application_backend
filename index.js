@@ -15,4 +15,7 @@ dbConnect("mongodb://localhost:27017")
   })
   .catch((err) => {
     console.log(err);
+    res.status(500).json({
+      message: "Internal server error",
+    });
   });

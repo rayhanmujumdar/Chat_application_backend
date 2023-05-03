@@ -15,6 +15,6 @@ exports.findUserByProperty = (key = "_id", value) => {
 
 exports.jwtToken = (userInfo) => {
   return jwt.sign(userInfo, process.env.JWTSCRECT, {
-    expiresIn: "1h",
+    expiresIn: "3h",
   });
 };

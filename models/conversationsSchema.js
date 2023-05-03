@@ -6,7 +6,7 @@ const conversationSchema = new Schema({
     require: true,
   },
   users: {
-    id: {
+    _id: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
@@ -23,12 +23,15 @@ const conversationSchema = new Schema({
       },
     },
   },
-  message: String,
+  messages: String,
   timestamp: {
     type: Date,
     default: Date.now,
   },
 });
+conversationSchema.methods.findByConversation = function (participants) {
+  return model('Conversation').findOne({ participants });
+};
 
 const Conversation = model("Conversation", conversationSchema);
 
