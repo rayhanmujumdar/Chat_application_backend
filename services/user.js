@@ -8,9 +8,9 @@ exports.createNewUser = ({ name, email, password }) => {
 
 exports.findUserByProperty = (key = "_id", value) => {
   if (key === "_id") {
-    return User.findById(value);
+    return User.findById(value).select({password: 0});
   }
-  return User.findOne({ [key]: value });
+  return User.findOne({ [key]: value }).select({password: 0});
 };
 
 exports.jwtToken = (userInfo) => {
