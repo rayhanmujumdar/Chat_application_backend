@@ -12,7 +12,6 @@ exports.usersController = async (req, res, next) => {
       user,
     });
   } catch (err) {
-    console.log(err)
-    next(error(500, "internal server error"));
+    next(error(500, err.message));
   }
 };

@@ -1,10 +1,20 @@
-const { sendMessagesService } = require("../services/messages");
+const {
+  sendMessagesService,
+  getMessageService,
+} = require("../services/messages");
 const error = require("../utils/error");
 // get specific user messages controller
-exports.getMessageController = (req, res, next) => {
+exports.getMessageController = async (req, res, next) => {
   try {
-    const queryData = req.query;
-    console.log(queryData);
+    const searchQuery = req.query;
+    const data = await getMessageService(searchQuery);
+    if (!data) {
+      throw error(500, "internal server error");
+    }
+    res.status(200).json({
+      message: "success",
+      data,
+    });
   } catch (err) {
     next(error(500, err.message));
   }
