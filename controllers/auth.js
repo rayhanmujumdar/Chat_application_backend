@@ -14,6 +14,7 @@ exports.loginController = async (req, res,next) => {
           message: "Something was wrong",
         });
   } catch (err) {
+    console.log(err)
     const errors = error(404, "Server error");
     next(errors);
   }

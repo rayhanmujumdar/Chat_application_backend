@@ -6,14 +6,20 @@ const messageSchema = new Schema({
     ref: "Conversation",
   },
   sender: {
-    _id: Schema.type.ObjectId,
+    _id: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
     email: {
       type: String,
       require: true,
     },
   },
   receiver: {
-    _id: Schema.Types.ObjectId,
+    _id: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
     email: {
       type: String,
       require: true,

@@ -1,4 +1,3 @@
-
 const bcrypt = require("bcrypt");
 const error = require("../utils/error");
 const { findUserByProperty, createNewUser, jwtToken } = require("./user.js");

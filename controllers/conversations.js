@@ -3,6 +3,7 @@ const {
   getConversationService,
   updateConversationService,
 } = require("../services/conversationService");
+const { sendMessagesService } = require("../services/messages");
 const error = require("../utils/error");
 
 // get user Conversation
@@ -10,7 +11,7 @@ exports.getConversationController = async (req, res, next) => {
   try {
     const queryInfo = req.query;
     const result = await getConversationService(queryInfo);
-    console.log(result)
+    console.log(result);
     if (!result) {
       throw error(500, "internal server error");
     }
@@ -27,13 +28,13 @@ exports.getConversationController = async (req, res, next) => {
 exports.createConversationController = async (req, res, next) => {
   try {
     const conversation = req.body;
-    const result = await createConversationService(conversation);
-    if (!result) {
+    const conversationData = await createConversationService(conversation);
+    if (!conversationData) {
       throw error(500, "internal server error");
     }
     res.status(200).json({
       message: "Success",
-      data: result,
+      data: conversationData,
     });
   } catch (err) {
     next(error(500, err.message));
@@ -43,9 +44,9 @@ exports.createConversationController = async (req, res, next) => {
 // update user conversation
 exports.updateConversationController = async (req, res, next) => {
   try {
-    const {id} = req.params
-    const updateData = req.body
-    const result = await updateConversationService(id,updateData)
+    const { id } = req.params;
+    const updateData = req.body;
+    const result = await updateConversationService(id, updateData);
     if (!result) {
       throw error(500, "internal server error");
     }

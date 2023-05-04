@@ -1,5 +1,6 @@
 const Conversation = require("../models/conversationsSchema");
 const error = require("../utils/error");
+const { sendMessagesService } = require("./messages");
 const { findUserByProperty } = require("./user");
 
 // get user conversation services
@@ -27,15 +28,30 @@ exports.createConversationService = async (conversationInfo) => {
     throw error(500, "Conversation already exist");
   }
   const opponent = participants.split("-");
-  const user = await findUserByProperty("email", opponent[1]);
-  if (user) {
+  const receiver = await findUserByProperty("email", opponent[1]);
+  if (receiver) {
+    // if receiver user exist in data base then go to next level
     const conversation = new Conversation({
       participants,
       users,
       message,
       timestamp,
     });
-    return conversation.save();
+    const conversationData = await conversation.save();
+    const newMessage = {
+      conversationId: conversationData._id,
+      sender: users,
+      receiver: {
+        _id: receiver._id,
+        email: receiver.email,
+      },
+      message,
+    };
+    const messageData = await sendMessagesService(newMessage);
+    if (!messageData) {
+      throw error(500, "internal server error");
+    }
+    return conversationData;
   }
 };
 
