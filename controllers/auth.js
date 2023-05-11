@@ -1,21 +1,21 @@
 const { registerService, loginService } = require("../services/auth.js");
 const error = require("../utils/error.js");
 // login controller handler
-exports.loginController = async (req, res,next) => {
+exports.loginController = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const token = await loginService({ email, password });
-    token
+    console.log(email,password)
+    const { token: accessToken, user } = await loginService({ email, password });
+    accessToken
       ? res.status(200).json({
-          message: "success",
-          token,
+        accessToken,
+          user,
         })
-      : res.status(404).json({
+      : res.status(500).json({
           message: "Something was wrong",
         });
   } catch (err) {
-    console.log(err)
-    const errors = error(404, "Server error");
+    const errors = error(404, err.message);
     next(errors);
   }
 };
@@ -26,20 +26,24 @@ exports.loginController = async (req, res,next) => {
 - password
 - name
 */
-exports.registerController = async (req, res,next) => {
+exports.registerController = async (req, res, next) => {
   const { name, email, password } = req.body || {};
   try {
-    const token = await registerService({ name, email, password });
-    token
+    const { user, token:accessToken } = await registerService({
+      name,
+      email,
+      password,
+    });
+    accessToken
       ? res.status(200).json({
-          message: "success",
-          token,
+        accessToken,
+          user,
         })
       : res.status(200).json({
           message: "Something was wrong",
         });
   } catch (err) {
-    const errors= error(404, "Server error");
+    const errors = error(404, err.message);
     next(errors);
   }
 };

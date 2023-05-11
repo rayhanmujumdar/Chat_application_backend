@@ -9,6 +9,11 @@ const messageSchema = new Schema({
     _id: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      require: true,
+    },
+    name: {
+      type: String,
+      require: true,
     },
     email: {
       type: String,
@@ -19,6 +24,11 @@ const messageSchema = new Schema({
     _id: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      require: true,
+    },
+    name: {
+      type: String,
+      require: true,
     },
     email: {
       type: String,
@@ -39,7 +49,7 @@ messageSchema.statics.findMessageBySortAndPaginate = function (searchQuery) {
     page: parseInt(page, 10) || 0,
     limit: parseInt(limit, 10) || 10,
   };
-  return this.find({conversationId: conversationId })
+  return this.find({ conversationId: conversationId })
     .skip(pageOptions.page > 1 ? (pageOptions.page - 1) * pageOptions.limit : 0)
     .sort({ [sort]: order })
     .limit(limit);

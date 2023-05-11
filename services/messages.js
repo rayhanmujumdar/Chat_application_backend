@@ -6,6 +6,7 @@ exports.getMessageService = (searchQuery) => {
 
 exports.sendMessagesService = (messageInfo) => {
   const { conversationId, sender, receiver, message } = messageInfo || {};
+  
   const messages = new Message({
     conversationId,
     sender,

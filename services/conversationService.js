@@ -10,9 +10,12 @@ exports.getConversationService = (queryInfo) => {
     page: parseInt(page, 10) || 0,
     limit: parseInt(limit, 10) || 10,
   };
-  return Conversation.find({ "users.email": participants })
+  const participantsProperty = Array.isArray(participants)
+    ? "participants"
+    : "users.email";
+  return Conversation.find({ [participantsProperty]: participants })
     .skip(pageOptions.page > 1 ? (pageOptions.page - 1) * pageOptions.limit : 0)
-    .sort({ [sort]: order })
+    .sort({ [sort]: order ? order : "asc" })
     .limit(pageOptions.limit);
 };
 
