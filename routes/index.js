@@ -14,7 +14,7 @@ router.get("/health", (_req, res) => {
 // auth route
 router.use("/api/v1/auth", authRouter);
 router.use('/api/v1/users',userRouter)
-router.use("/api/v1/conversation", verifyToken, conversationRouter);
+router.use("/api/v1/conversations", verifyToken, conversationRouter);
 router.use("/api/v1/messages", verifyToken, messageRouter);
 
 module.exports = router;
