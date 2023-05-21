@@ -1,6 +1,6 @@
 const Conversation = require("../models/conversationsSchema");
 const error = require("../utils/error");
-const { sendMessagesService } = require("./messages");
+// const { sendMessagesService } = require("./messages");
 const { findUserByProperty } = require("./user");
 
 // get user conversation services
@@ -40,18 +40,18 @@ exports.createConversationService = async (conversationInfo) => {
       message,
       timestamp,
     });
-    const conversationData = await conversation.save();
-    const newMessage = {
-      conversationId: conversationData._id,
-      sender: conversationData?.users[0],
-      receiver: conversationData?.users[1],
-      message: conversationData?.message,
-    };
-    const messageData = await sendMessagesService(newMessage);
-    if (!messageData) {
-      throw error(500, "internal server error");
-    }
-    return conversationData;
+    // if i will entry any message in database when i am call conversation api.
+    // const newMessage = {
+    //   conversationId: conversationData._id,
+    //   sender: conversationData?.users[0],
+    //   receiver: conversationData?.users[1],
+    //   message: conversationData?.message,
+    // };
+    // const messageData = await sendMessagesService(newMessage);
+    // if (!messageData) {
+    //   throw error(500, "internal server error");
+    // }
+    return conversation.save();
   }
 };
 
@@ -60,22 +60,9 @@ exports.updateConversationService = async (id, updateData) => {
   if (Object.keys(updateData).length <= 0) {
     throw error(500, "There was an error");
   }
-  const conversationData = await Conversation.findByIdAndUpdate(
-    { _id: id },
-    updateData
-  ).select({
+  return Conversation.findOneAndUpdate({ _id: id }, updateData, {
+    returnDocument: "after",
+  }).select({
     __v: 0,
   });
-  const newMessage = {
-    conversationId: id,
-    sender: updateData?.users[0],
-    receiver: updateData?.users[1],
-    message: updateData?.message,
-    timestamp: updateData?.timestamp,
-  };
-  const messageData = await sendMessagesService(newMessage);
-  if (!messageData) {
-    throw error(500, "internal server error");
-  }
-  return conversationData;
 };

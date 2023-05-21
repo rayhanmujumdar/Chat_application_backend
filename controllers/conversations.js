@@ -31,6 +31,11 @@ exports.createConversationController = async (req, res, next) => {
     if (!conversationData) {
       throw error(500, "internal server error");
     }
+    // add to socket io with conversation
+    io.emit("conversation", {
+      message: "Success",
+      data: conversationData,
+    });
     res.status(200).json({
       message: "Success",
       data: conversationData,
@@ -52,12 +57,17 @@ exports.updateConversationController = async (req, res, next) => {
     if (!result) {
       throw error(500, "internal server error");
     }
+    // add to socket io with conversation
+    io.emit("conversation", {
+      message: "Success",
+      data: result,
+    });
     res.status(200).json({
       message: "Success",
       data: result,
     });
   } catch (err) {
-	console.log(err.message)
+    console.log(err.message);
     next(error(500, err.message));
   }
 };

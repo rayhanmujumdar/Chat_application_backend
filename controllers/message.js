@@ -31,6 +31,12 @@ exports.sendMessageController = async (req, res, next) => {
     if (!sendMessageResult) {
       throw error(500, "internal server error");
     }
+    // add to socket io with new message
+    io.emit("message", {
+      message: "Success",
+      data: sendMessageResult,
+    });
+    // send response data
     res.status(200).json({
       message: "success",
       data: sendMessageResult,

@@ -6,6 +6,10 @@ const app = require("./app/app");
 const port = process.env.PORT || 4000;
 
 const server = http.createServer(app);
+// implement socket event
+const io = require("socket.io")(server);
+
+global.io = io;
 
 dbConnect("mongodb://localhost:27017")
   .then(() => {
