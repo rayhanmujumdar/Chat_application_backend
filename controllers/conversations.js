@@ -32,7 +32,7 @@ exports.createConversationController = async (req, res, next) => {
       throw error(500, "internal server error");
     }
     // pusher tool api use to realtime chat
-    pusher.trigger("Dingu-Chat-application", "conversation-created", {
+    pusher.trigger(process.env.PUSHER_CHANNEL_NAME, "conversation", {
       message: "success",
       data: conversationData,
     });
@@ -63,7 +63,7 @@ exports.updateConversationController = async (req, res, next) => {
       throw error(500, "internal server error");
     }
     // pusher tool api use to realtime chat
-    pusher.trigger("dingu-chat-application", "conversation-created", {
+    pusher.trigger(process.env.PUSHER_CHANNEL_NAME, "conversation", {
       message: "success",
       data: result,
     });
@@ -72,6 +72,7 @@ exports.updateConversationController = async (req, res, next) => {
       message: "Success",
       data: result,
     });
+
     res.status(200).json({
       message: "Success",
       data: result,

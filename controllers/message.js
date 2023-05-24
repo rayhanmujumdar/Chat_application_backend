@@ -33,7 +33,7 @@ exports.sendMessageController = async (req, res, next) => {
       throw error(500, "internal server error");
     }
     // pusher tool api use to realtime chat
-    pusher.trigger("dingu_chat_application", "message", {
+    pusher.trigger(process.env.PUSHER_CHANNEL_NAME, "message", {
       message: "success",
       data: sendMessageResult,
     });
