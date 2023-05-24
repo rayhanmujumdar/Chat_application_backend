@@ -1,7 +1,7 @@
 // 404 error handler
 const infoErrorHandler = (_req, _res, next) => {
   const error = new Error("Requested url not found");
-  error.status = 404;
+  error.status = 400;
   next(error);
 };
 
