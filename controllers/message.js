@@ -1,3 +1,4 @@
+const pusher = require("../utils/pusher");
 const {
   sendMessagesService,
   getMessageService,
@@ -31,6 +32,11 @@ exports.sendMessageController = async (req, res, next) => {
     if (!sendMessageResult) {
       throw error(500, "internal server error");
     }
+    // pusher tool api use to realtime chat
+    pusher.trigger("dingu_chat_application", "message", {
+      message: "success",
+      data: sendMessageResult,
+    });
     // add to socket io with new message
     io.emit("message", {
       message: "Success",
