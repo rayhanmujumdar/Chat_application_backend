@@ -36,11 +36,11 @@ exports.createConversationController = async (req, res, next) => {
       message: "success",
       data: conversationData,
     });
-    // add to socket io with conversation
-    io.emit("conversation", {
-      message: "Success",
-      data: conversationData,
-    });
+    // TODO: add to socket io with conversation
+    // io.emit("conversation", {
+    //   message: "Success",
+    //   data: conversationData,
+    // });
     res.status(200).json({
       message: "Success",
       data: conversationData,
@@ -67,11 +67,11 @@ exports.updateConversationController = async (req, res, next) => {
       message: "success",
       data: result,
     });
-    // add to socket io with conversation
-    io.emit("conversation", {
-      message: "Success",
-      data: result,
-    });
+    // TODO: add to socket io with conversation
+    // io.emit("conversation", {
+    //   message: "Success",
+    //   data: result,
+    // });
 
     res.status(200).json({
       message: "Success",

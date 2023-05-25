@@ -32,16 +32,17 @@ exports.sendMessageController = async (req, res, next) => {
     if (!sendMessageResult) {
       throw error(500, "internal server error");
     }
+    console.log(sendMessageResult)
     // pusher tool api use to realtime chat
     pusher.trigger(process.env.PUSHER_CHANNEL_NAME, "message", {
       message: "success",
       data: sendMessageResult,
     });
-    // add to socket io with new message
-    io.emit("message", {
-      message: "Success",
-      data: sendMessageResult,
-    });
+    // TODO: add to socket io with new message
+    // io.emit("message", {
+    //   message: "Success",
+    //   data: sendMessageResult,
+    // });
     // send response data
     res.status(200).json({
       message: "success",
