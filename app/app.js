@@ -1,4 +1,3 @@
-require("dotenv").config();
 const { errorHandler, infoErrorHandler } = require("../errors/error");
 const router = require("../routes/index");
 const express = require("express");
