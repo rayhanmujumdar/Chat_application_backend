@@ -49,10 +49,15 @@ messageSchema.statics.findMessageBySortAndPaginate = function (searchQuery) {
     page: parseInt(page, 10) || 0,
     limit: parseInt(limit, 10) || 10,
   };
-  return this.find({ conversationId: conversationId })
+  return this.find({ conversationId })
     .skip(pageOptions.page > 1 ? (pageOptions.page - 1) * pageOptions.limit : 0)
     .sort({ [sort]: order })
     .limit(limit);
+};
+
+// create a custom total data count
+messageSchema.statics.countTotal = function (conversationId) {
+  return this.where({ "conversationId": conversationId });
 };
 
 const Message = model("Message", messageSchema);

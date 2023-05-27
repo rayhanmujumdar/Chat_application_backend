@@ -2,16 +2,19 @@ const pusher = require("../utils/pusher");
 const {
   sendMessagesService,
   getMessageService,
+  deleteMessageService,
 } = require("../services/messages");
 const error = require("../utils/error");
 // get specific user messages controller
 exports.getMessageController = async (req, res, next) => {
   try {
     const searchQuery = req.query;
-    const data = await getMessageService(searchQuery);
+    const {data,totalCount} = await getMessageService(searchQuery) || {};
     if (!data) {
       throw error(500, "internal server error");
     }
+    res.header('Access-control-Expose-Headers',"X-Total-Count")
+    res.header("X-Total-Count",totalCount)
     res.status(200).json({
       message: "success",
       data,
@@ -51,3 +54,12 @@ exports.sendMessageController = async (req, res, next) => {
     next(error(500, err.message));
   }
 };
+
+// create a delete all message controller
+exports.deleteMessageController = async (req,res) => {
+  const {deletedCount} = await deleteMessageService()
+  res.status(200).json({
+    message: 'success',
+    deletedCount
+  })
+}

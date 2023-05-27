@@ -4,19 +4,12 @@ const error = require("../utils/error");
 const { findUserByProperty } = require("./user");
 
 // get user conversation services
-exports.getConversationService = (queryInfo) => {
-  const { participants, sort, order, page, limit } = queryInfo;
-  const pageOptions = {
-    page: parseInt(page, 10) || 0,
-    limit: parseInt(limit, 10) || 10,
-  };
-  const participantsProperty = Array.isArray(participants)
-    ? "participants"
-    : "users.email";
-  return Conversation.find({ [participantsProperty]: participants })
-    .skip(pageOptions.page > 1 ? (pageOptions.page - 1) * pageOptions.limit : 0)
-    .sort({ [sort]: order ? order : "asc" })
-    .limit(pageOptions.limit);
+exports.getConversationService = async (queryInfo) => {
+  const result = await Conversation.findConversationBySortAndPaginate(
+    queryInfo
+  );
+  const totalCount = await Conversation.countTotal(queryInfo?.participants);
+  return { result, totalCount };
 };
 
 // create a new conversation service

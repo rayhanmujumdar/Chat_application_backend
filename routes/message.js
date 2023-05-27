@@ -2,6 +2,7 @@ const router = require("express").Router();
 const {
   getMessageController,
   sendMessageController,
+  deleteMessageController,
 } = require("../controllers/message");
 
 router
@@ -9,6 +10,8 @@ router
   // get authenticate user messages
   .get(getMessageController)
   // post send new messages
-  .post(sendMessageController);
+  .post(sendMessageController)
+  //delete all message in database
+  .delete(deleteMessageController);
 
 module.exports = router;

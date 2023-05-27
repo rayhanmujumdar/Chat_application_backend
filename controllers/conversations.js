@@ -10,10 +10,12 @@ const error = require("../utils/error");
 exports.getConversationController = async (req, res, next) => {
   try {
     const queryInfo = req.query;
-    const result = await getConversationService(queryInfo);
+    const { result, totalCount } = await getConversationService(queryInfo);
     if (!result) {
       throw error(500, "internal server error");
     }
+    res.header("Access-control-Expose-Headers", "X-Total-Count");
+    res.header("X-Total-Count", totalCount);
     res.status(200).json({
       message: "Success",
       data: result,
@@ -82,3 +84,5 @@ exports.updateConversationController = async (req, res, next) => {
     next(error(500, err.message));
   }
 };
+
+
